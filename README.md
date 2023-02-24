@@ -1,2 +1,22 @@
-# take-me-back
-Compile CTF binaries on previous glibc versions, remember the good ol' days.
+# take me back
+> I miss the old libc
+
+## What is this? 🧐
+With the [latest commits to glibc 2.34](https://sourceware.org/git/?p=glibc.git;a=commit;h=035c012e32c11e84d64905efaf55e74f704d3668), getting basic ROP gadgets inside your binaries is harder, which is good for security, but makes learning the basics a bit more annoying. This small Docker container spins up an Ubuntu image with an older version of glibc, so that you don't have to download a bunch of things yourself. It will also copy the libc and linker out of the Docker container for added convenience.
+
+## Usage 🐳
+**Prerequisites:** [Docker](https://docs.docker.com/engine/install/)
+```shell
+docker run --rm -it -v "$PWD:/pwd" take-me-back [GCC FLAGS]
+```
+
+### Example
+```shell
+docker run --rm -it -v "$PWD:/pwd" take-me-back vuln.c -o vuln -fno-stack-protector -z execstack -no-pie
+```
+
+## TODO 📋
+- [ ] Figure out a clean way to allow someone to specify the glibc version they need
+- [ ] maybe write a Python wrapper to handle the whole file path issue?
+- [ ] Use a smaller base image, maybe Arch Linux or [alpine-glibc](https://hub.docker.com/r/frolvlad/alpine-glibc)?
+- [ ] Fix the whole ownership thing
